@@ -9,7 +9,7 @@ if(isset($_POST['username']))
         // auth okay, setup session
         $_SESSION['userID'] = $results;
         // redirect to required page
-        header( "Location: profil_employe.php" );
+        header( "Location: timesheet.php" );
      } else {
         // didn't auth go back to loginform
         header( "Location: index.php" );

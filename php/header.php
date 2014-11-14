@@ -8,12 +8,13 @@
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
-      <li class="active"><a href="profil_employe.php">Profil Personnel</a></li>
+      <li class="active"><a href="timesheet.php">Mes Feuilles de Temps</a></li>
+      <li class="active"><a href="profil_employe.php">Mon Profil Personnel</a></li>
       <li class="has-dropdown">
         <a href="#">Param&egrave;tres</a>
         <ul class="dropdown">
           <li><a href="#">Langue</a></li>
-          <li class="active"><a href="php/logout.php">Terminer la session</a></li>
+          <li class="active"><a href="php/logout.php">Terminer la Session</a></li>
         </ul>
       </li>
     </ul>

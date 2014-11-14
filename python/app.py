@@ -7,6 +7,7 @@ from mysql.connector import errorcode
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
+
 @app.route('/FeuilleDeTemps/api/v1.0/employes', methods=['GET'])
 @auth.login_required
 def get_employes():
@@ -35,6 +36,7 @@ def get_employes():
             print("Database does not exists")
         else:
             print(err)
+
 
 @app.route('/FeuilleDeTemps/api/v1.0/employes/<int:emp_id>', methods=['GET'])
 @auth.login_required
@@ -65,6 +67,7 @@ def get_employee(emp_id):
         else:
             print(err)
 
+
 @app.route('/FeuilleDeTemps/api/v1.0/auth/<emp_email>')
 @auth.login_required
 def get_password(emp_email):
@@ -79,6 +82,35 @@ def get_password(emp_email):
         for (this_id, password) in cursor:
             results['id'] = this_id
             results['password'] = password
+
+        if len(results) == 0:
+            abort(404)
+        return jsonify(results)
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exists")
+        else:
+            print(err)
+
+
+@app.route('/FeuilleDeTemps/api/v1.0/projets', methods=['GET'])
+@auth.login_required
+def get_projects():
+    with open('api_config.yaml', 'rb') as f:
+        config_bd = yaml.load(f)
+    try:
+        conn = mysql.connector.connect(**config_bd)
+        cursor = conn.cursor()
+
+        # Only open projects
+        query = 'Select id, nom from projets where statut = 1'
+        cursor.execute(query)
+        results = {}
+        for (this_id, nom) in cursor:
+            results[this_id] = nom
 
         if len(results) == 0:
             abort(404)
