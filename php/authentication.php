@@ -18,7 +18,7 @@ if(isset($_POST['username']))
 
 function auth($username, $password){
     
-    $service_url = 'http://localhost:5000/FeuilleDeTemps/api/v1.0/auth/' . $username;
+    $service_url = 'http://localhost:5000/timesheets/api/v1.0/auth/' . $username;
 
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $service_url);
