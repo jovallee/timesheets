@@ -3,8 +3,8 @@ from flask_httpauth import HTTPBasicAuth
 import yaml
 import mysql.connector
 from mysql.connector import errorcode
-from datetime.DateTime import datetime
-from datetime import timedelta
+# from datetime.DateTime import datetime
+# from datetime import timedelta
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
