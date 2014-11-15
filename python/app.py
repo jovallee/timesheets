@@ -3,12 +3,14 @@ from flask_httpauth import HTTPBasicAuth
 import yaml
 import mysql.connector
 from mysql.connector import errorcode
+from datetime.DateTime import datetime
+from datetime import timedelta
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 
-@app.route('/FeuilleDeTemps/api/v1.0/employes', methods=['GET'])
+@app.route('/timesheets/api/v1.0/employes', methods=['GET'])
 @auth.login_required
 def get_employes():
 
@@ -38,7 +40,7 @@ def get_employes():
             print(err)
 
 
-@app.route('/FeuilleDeTemps/api/v1.0/employes/<int:emp_id>', methods=['GET'])
+@app.route('/timesheets/api/v1.0/employes/<int:emp_id>', methods=['GET'])
 @auth.login_required
 def get_employee(emp_id):
     with open('api_config.yaml', 'rb') as f:
@@ -68,7 +70,7 @@ def get_employee(emp_id):
             print(err)
 
 
-@app.route('/FeuilleDeTemps/api/v1.0/auth/<emp_email>')
+@app.route('/timesheets/api/v1.0/auth/<emp_email>')
 @auth.login_required
 def get_password(emp_email):
     with open('api_config.yaml', 'rb') as f:
@@ -96,7 +98,7 @@ def get_password(emp_email):
             print(err)
 
 
-@app.route('/FeuilleDeTemps/api/v1.0/projets', methods=['GET'])
+@app.route('/timesheets/api/v1.0/projets', methods=['GET'])
 @auth.login_required
 def get_projects():
     with open('api_config.yaml', 'rb') as f:
@@ -123,6 +125,38 @@ def get_projects():
             print("Database does not exists")
         else:
             print(err)
+
+
+@app.route('/timesheets/api/v1.0/timesheets/<emp_id>/<beg_date>', methods=['GET'])
+@auth.login_required
+def return_timesheets_details_for_week(emp_id, beg_date):
+    with open('api_config.yaml', 'rb') as f:
+        config_bd = yaml.load(f)
+    try:
+        conn = mysql.connector.connect(**config_bd)
+        cursor = conn.cursor()
+
+        formatted_date = datetime(beg_date)
+        query = 'Select date, projet_id, heure_deb, heure_fin, temps_pause, temps_total, note from timesheets where date >=' + formatted_date + 'and date <=' + formatted_date + \
+                timedelta(days=6) + 'and emp_id=' + emp_id
+
+        cursor.execute(query)
+        results = {}
+        for (this_id, nom) in cursor:
+            results[this_id] = nom
+
+        if len(results) == 0:
+            abort(404)
+        return jsonify(results)
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exists")
+        else:
+            print(err)
+
 
 @app.errorhandler(404)
 def not_found(error):

@@ -103,4 +103,13 @@ function get_times(){
 	return($times);
 }
 
+function get_wk_start_from_date($date) {
+
+	$ts = strtotime($date);
+	$start = strtotime('sunday this week -1 week', $ts);
+	$end = strtotime('saturday this week', $ts);
+	return(date('Y-m-d', $start));
+
+}
+
 ?>

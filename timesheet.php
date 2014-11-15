@@ -19,22 +19,29 @@
     <div class="row">
       <div class="small-5 columns end">
         <div class="panel">
-            <input type="text" class="span2" value="2014-11-13" id="dp1">
+            <input type="text" class="span2" value=
+            <?php 
+            $selected_date = date('Y-m-d');
+
+            $wk_start_date = get_wk_start_from_date($selected_date);
+
+            echo '"' . $selected_date . '"'; 
+            ?> 
+            id="dp1">
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="small-12 columns end">
         <dl class="tabs" data-tab>
-          <dd class="active"><a href="#panel1">D</a></dd>
-          <dd><a href="#panel2">L</a></dd>
-          <dd><a href="#panel3">Ma</a></dd>
-          <dd><a href="#panel4">Me</a></dd>
-          <dd><a href="#panel5">J</a></dd>
-          <dd><a href="#panel6">V</a></dd>
-          <dd><a href="#panel7">S</a></dd>
-          <dd><a href="#panel8">Total Semaine</a></dd>
+          <dd class="active"><a href="#panel1">D</br>-</a></dd>
+          <dd><a href="#panel2">L</br>8</a></dd>
+          <dd><a href="#panel3">M</br>8</a></dd>
+          <dd><a href="#panel4">M</br>8</a></dd>
+          <dd><a href="#panel5">J</br>8</a></dd>
+          <dd><a href="#panel6">V</br>8</a></dd>
+          <dd><a href="#panel7">S</br>-</a></dd>
+          <dd><a href="#panel8">T</br>40</a></dd>
         </dl>
 
         <!--- DIMANCHE -->
@@ -42,7 +49,7 @@
           <div class="content active" id="panel1">
             <form>
               <div class='row'>
-                <div class='small-6 columns end'>
+                <div class='small-6 columns'>
                   <label>Projet
                     <select name='projects'>
                     <option disabled selected> --- </option>
