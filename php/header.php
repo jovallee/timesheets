@@ -1,7 +1,7 @@
 <?php
 
 # Set the timezone to system timezone, but default to EDT
-$timezone = 'EDT';
+$timezone = 'EST';
 if (is_link('/etc/localtime')) {
     // Mac OS X (and older Linuxes)    
     // /etc/localtime is a symlink to the 
