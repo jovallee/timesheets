@@ -24,7 +24,15 @@
             $selected_date = date('Y-m-d');
 
             $wk_start_date = get_wk_start_from_date($selected_date);
-
+            $timesheets = get_timesheets_from_start_date($_SESSION['userID'], $wk_start_date);
+            $hours_this_week = array();
+            for ($i=0;$i<7;$i++) {
+              if (array_key_exists(date('Y-m-d', strtotime($wk_start_date. ' + ' . $i . ' days')), $timesheets)) {
+                $hours_this_week[] = $timesheets[date('Y-m-d', strtotime($wk_start_date. ' + ' . $i . ' days'))]['temps_total'];
+              } else {
+                $hours_this_week[] = 0;
+              }
+            }
             echo '"' . $selected_date . '"'; 
             ?> 
             id="dp1">
@@ -34,14 +42,14 @@
     <div class="row">
       <div class="small-12 columns end">
         <dl class="tabs" data-tab>
-          <dd class="active"><a href="#panel1">D</br>-</a></dd>
-          <dd><a href="#panel2">L</br>8</a></dd>
-          <dd><a href="#panel3">M</br>8</a></dd>
-          <dd><a href="#panel4">M</br>8</a></dd>
-          <dd><a href="#panel5">J</br>8</a></dd>
-          <dd><a href="#panel6">V</br>8</a></dd>
-          <dd><a href="#panel7">S</br>-</a></dd>
-          <dd><a href="#panel8">T</br>40</a></dd>
+          <dd class="active"><a href="#panel1"><b>D</b></br><?php echo $hours_this_week[0]; ?></a></dd>
+          <dd><a href="#panel2"><b>L</b></br><?php echo $hours_this_week[1]; ?></a></dd>
+          <dd><a href="#panel3"><b>M</b></br><?php echo $hours_this_week[2]; ?></a></dd>
+          <dd><a href="#panel4"><b>M</b></br><?php echo $hours_this_week[3]; ?></a></dd>
+          <dd><a href="#panel5"><b>J</b></br><?php echo $hours_this_week[4]; ?></a></dd>
+          <dd><a href="#panel6"><b>V</b></br><?php echo $hours_this_week[5]; ?></a></dd>
+          <dd><a href="#panel7"><b>S</b></br><?php echo $hours_this_week[6]; ?></a></dd>
+          <dd><a href="#panel8"><b>T</b></br><?php echo array_sum($hours_this_week); ?></a></dd>
         </dl>
 
         <!--- DIMANCHE -->

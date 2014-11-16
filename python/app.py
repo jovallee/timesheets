@@ -138,13 +138,16 @@ def return_timesheets_details_for_week(emp_id, beg_date):
 
         formatted_date = dateutil.parser.parse(beg_date)
         query = 'Select date, projet_id, heure_deb, heure_fin, temps_pause, temps_total, note from timesheets ' \
-                'where date >=' + formatted_date + 'and date <=' + formatted_date + \
-                datetime.DateTime.timedelta(days=6) + 'and emp_id=' + emp_id
+                'where date >="' + str(formatted_date) + '" and date <="' + str(formatted_date +
+                                                                                datetime.timedelta(days=6)) + \
+                '" and emp_id=' + emp_id
+
+        print(query)
 
         cursor.execute(query)
         results = {}
         for (date, projet_id, heure_deb, heure_fin, temps_pause, temps_total, note) in cursor:
-            results[date] = {'projet_id': projet_id, 'heure_deb': heure_deb, 'heure_fin': heure_fin,
+            results[str(date)] = {'projet_id': projet_id, 'heure_deb': str(heure_deb), 'heure_fin': str(heure_fin),
                              'temps_pause': temps_pause, 'temps_total': temps_total, 'note': note}
 
         if len(results) == 0:
